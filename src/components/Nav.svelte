@@ -1,6 +1,5 @@
 <script>
 	export let segment;
-	export let stories = [];
 </script>
 
 <style>
@@ -27,12 +26,12 @@
 		float: left;
 	}
 
-	.selected {
+	[aria-current] {
 		position: relative;
 		display: inline-block;
 	}
 
-	.selected::after {
+	[aria-current]::after {
 		position: absolute;
 		content: '';
 		width: calc(100% - 1em);
@@ -51,13 +50,11 @@
 
 <nav>
 	<ul>
-		<li class={segment === undefined ? 'selected' : ''}>
-			<a href='.'> Index </a>
-		</li>
-		{#each stories as story}
-			<li class={story.full_slug === segment ? 'selected' : ''}>
-				<a href={story.full_slug}> {story.name} </a>
-			</li>
-		{/each}
+		<li><a aria-current='{segment === undefined ? "page" : undefined}' href='.'>home</a></li>
+		<li><a aria-current='{segment === "about" ? "page" : undefined}' href='about'>about</a></li>
+
+		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
+		     the blog data when we hover over the link or tap it on a touchscreen -->
+		<li><a rel=prefetch aria-current='{segment === "blog" ? "page" : undefined}' href='blog'>blog</a></li>
 	</ul>
 </nav>
